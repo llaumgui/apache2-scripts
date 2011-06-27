@@ -1,0 +1,88 @@
+#!/bin/bash
+###############################################################################
+#
+# a2ensite : Reprise du a2ensite de la distribution Debian
+#
+# by Guillaume Kulakowski a.k.a LLaumgui <guillaume at llaumgui dot com>
+#   based on a Debian's script less anotation about owner. 
+# Version 1.0
+#
+###############################################################################
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, 
+#  - write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#   - See http://www.gnu.org/licenses/gpl.html
+###############################################################################
+
+
+# Varibles
+SYSCONF_PATH='/etc/httpd'               # Chemin vers la conf apache
+HTTPD_RELOAD='/etc/init.d/httpd reload' # Commande pour relancer apache
+SITE_AVAILABLE='sites-available'        # Site en attente
+SITE_ENABLED='sites-enabled'            # Site activés
+
+
+# Quel site ?
+if [ -z ${1} ]; then
+    echo "Quel site voulez vous activer ?"
+    echo "Votre choix est : "
+    for site in ${SYSCONF_PATH}/${SITE_AVAILABLE}/*; do
+        echo -e "\t${site}" | sed -e "s,${SYSCONF_PATH}/${SITE_AVAILABLE}/,,g"
+    done;
+    echo -n "Nom du site ? "
+    read SITENAME
+else
+    SITENAME=${1}
+fi
+
+
+# Site par défaut
+if [ ${SITENAME} = "default" ]; then
+    PRIORITY="000"
+fi
+
+
+# Déjà activé ?
+if [ -e ${SYSCONF_PATH}/${SITE_ENABLED}/${SITENAME} -o \
+     -e ${SYSCONF_PATH}/${SITE_ENABLED}/${PRIORITY}-${SITENAME} ]; then
+    echo "Ce site est déjà activé ! ! !"
+    exit 0
+fi
+
+
+# Présent ?
+if ! [ -e ${SYSCONF_PATH}/${SITE_AVAILABLE}/${SITENAME} ]; then
+    echo "Ce site n'existe pas ! ! !"
+    exit 1
+fi
+
+
+# Traitement :
+if [ ${SITENAME} = "default" ]; then
+    ln -sf ${SYSCONF_PATH}/${SITE_AVAILABLE}/${SITENAME} \
+            ${SYSCONF_PATH}/${SITE_ENABLED}/${PRIORITY}-${SITENAME}
+else
+    ln -sf ${SYSCONF_PATH}/${SITE_AVAILABLE}/${SITENAME} ${SYSCONF_PATH}/${SITE_ENABLED}/${SITENAME}
+fi
+
+
+# Relancer apache ?
+echo -n "Relancer Apache ? [o]/n : "
+read RELOAD
+if ! [ ${RELOAD} = "n" ]; then
+    ${HTTPD_RELOAD}
+    echo "Site ${SITENAME} installé et configuration rechargée."
+else
+    echo "Site ${SITENAME} installé. Veuillez relancer apache !"
+fi
