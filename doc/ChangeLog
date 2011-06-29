@@ -1,8 +1,10 @@
+# ChangeLog
+
 * Mon Jan 17 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.2.0
-- Add include in conf.d
+ - Add include in conf.d
 
 * Mon Nov 01 2010 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.1.0
-- Bug fixes
+ - Bug fixes
 
 * Wed Aug 20 2008 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.0.0
-- First packaged release
+ - First packaged release
