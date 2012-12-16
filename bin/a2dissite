@@ -4,8 +4,8 @@
 # a2dissite : Reprise du a2dissite de la distribution Debian
 #
 # by Guillaume Kulakowski a.k.a LLaumgui <guillaume at llaumgui dot com>
-#   based on a Debian's script less anotation about owner. 
-# Version 1.0
+#   based on a Debian's script less anotation about owner.
+# Version 1.3
 #
 ###############################################################################
 # This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, 
+# along with this program; if not,
 #  - write to the Free Software
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #   - See http://www.gnu.org/licenses/gpl.html
@@ -28,7 +28,7 @@
 
 # Varibles
 SYSCONF_PATH='/etc/httpd'               # Chemin vers la conf apache
-HTTPD_RELOAD='/etc/init.d/httpd reload' # Commande pour relancer apache
+HTTPD_RELOAD='service httpd reload'     # Commande pour relancer apache
 SITE_AVAILABLE='sites-available'        # Site en attente
 SITE_ENABLED='sites-enabled'            # Site activés
 
